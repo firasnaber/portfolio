@@ -56,23 +56,23 @@
 
     <header>
       <h1>Firas Naber</h1>
-      <p class="tagline">Computer Science · Data Science · Distributed Systems</p>
+      <p class="tagline">Data Scientist · Software Engineer · Graduate Student at Georgia Tech</p>
       <div class="contact">
         <a href="mailto:firasnaber@gmail.com">firasnaber@gmail.com</a>
         <span>·</span>
-        <a href="https://www.linkedin.com/in/firasnaber" target="_blank">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/firasnaber" target="_blank" rel="noopener">LinkedIn</a>
         <span>·</span>
-        <a href="https://www.github.com/firasnaber" target="_blank">GitHub</a>
+        <a href="https://www.github.com/firasnaber" target="_blank" rel="noopener">GitHub</a>
         <span>·</span>
-        <a href="assets/resume.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+        <a href="assets/resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
       </div>
     </header>
 
     <section class="about" id="about">
       <p>
         I'm a graduate student in Computer Science at the Georgia Institute of Technology,
-        with 3+ years of research interests spanning large-scale data analysis, statistical modeling,
-        and distributed systems. My work has ranged from processing healthcare records
+        with 3+ years of experience in research and applied data science spanning large-scale data analysis, statistical
+        modeling, and distributed systems. My work has ranged from processing healthcare records
         for hundreds of millions of individuals to building concurrent systems in C and C++.
       </p>
     </section>
@@ -149,6 +149,63 @@
           race conditions under concurrent load.
         </p>
       </div>
+
+      <div class="project">
+        <div class="project-title">EvoTSP: Genetic Algorithm Visualizer for the Traveling Salesman Problem</div>
+        <div class="project-meta">JavaScript · Node.js · AWS (EC2, Lambda, DynamoDB, IAM) · Leaflet · <a
+            href="https://github.com/firasnaber/tsp" target="_blank" rel="noopener">GitHub</a></div>
+        <p class="project-desc">
+          A Traveling Salesman visualizer with a Node.js backend deployed on AWS (EC2, Lambda,
+          DynamoDB, IAM). A genetic algorithm computes near-optimal routes between user-selected
+          map points, with results rendered dynamically on an interactive Leaflet map as the
+          population evolves across generations. AWS Lambda APIs handle route computation and
+          data flow between the backend and frontend.
+        </p>
+      </div>
+
+      <div class="project">
+        <div class="project-title">Genetic Algorithm for the 0-1 Knapsack Problem</div>
+        <div class="project-meta">Python · genetic algorithms · simulated annealing · <a
+            href="https://github.com/firasnaber/genetic-algorithm-01-knapsack" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p class="project-desc">
+          A Python implementation of a genetic algorithm to solve the 0-1 Knapsack problem,
+          with configurable selection (tournament, roulette), crossover (single-point, multi-point),
+          and mutation (bit-flip, swap) operators. Handles infeasible solutions via penalty-based
+          fitness adjustment and preserves top performers across generations through elitism. Includes
+          a simulated-annealing baseline for comparison against the GA's near-optimal results.
+        </p>
+      </div>
+
+      <div class="project">
+        <div class="project-title">CNN Image Classification on CIFAR-10</div>
+        <div class="project-meta">Python · TensorFlow / Keras · <a
+            href="https://github.com/firasnaber/cnn-image-classification" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p class="project-desc">
+          A convolutional neural network for classifying CIFAR-10 images across 10 categories,
+          built with TensorFlow and Keras. The architecture stacks three Conv2D layers with
+          interleaved max-pooling and two dense layers (~123K trainable parameters), trained
+          with Adam and sparse categorical crossentropy. Achieved ~72% test accuracy after
+          ten epochs. Includes experiments with layer depth, epoch count, dropout regularization,
+          and softmax vs. ReLU output activations to investigate accuracy–overfitting tradeoffs.
+        </p>
+      </div>
+
+      <div class="project">
+        <div class="project-title">DoorBoard: Faculty Announcement Web App</div>
+        <div class="project-meta">Angular · TypeScript · Java · MongoDB · Auth0 · Docker · co-authored coursework · <a
+            href="https://github.com/firasnaber/DoorBoard" target="_blank" rel="noopener">GitHub</a></div>
+        <p class="project-desc">
+          A full-stack web application built with a team during a software-design course,
+          intended as a digital alternative to the sticky notes professors leave on their
+          office doors. An Angular + TypeScript frontend communicates with a Java backend
+          and a MongoDB database; Auth0 handles per-user authentication; QR-code generation
+          lets visitors scan their way to a faculty member's announcement page. The system
+          supports note expiration, pinning, favoriting, and is containerized with Docker
+          for deployment on DigitalOcean.
+        </p>
+      </div>
     </section>
 
     <section id="publications">
@@ -163,24 +220,10 @@
               Paulus, Chun Chieh Fan &amp; Wesley K. Thompson.</span>
             <span class="pub-title">Polygenic score for C-reactive protein is linked to faster cortical thinning and
               psychopathology risk in adolescents.</span>
-            <span class="pub-venue"><em>Nature</em>, 4, 427–438.</span>
+            <span class="pub-venue"><em>Nature Mental Health</em>, 4, 427–438.</span>
             <span class="pub-links">
-              <a href="https://doi.org/10.1038/s44220-026-00585-w" target="_blank">DOI</a> · <a
-                href="https://www.nature.com/articles/s44220-026-00585-w.pdf" target="_blank">PDF</a>
-            </span>
-
-          <li class="pub">
-            <span class="pub-authors">Marybel R. Gonzalez, Ty Brumback, Madison K. Wickershiem, Edith V. Sullivan, Adolf
-              Pfefferbaum, Duncan B. Clark, David B. Goldston, M.J. Meloy, Firas Naber, Eva M. Müller-Oehring, Angelica
-              M. Morales, Fiona C. Baker, Kate B. Nooner, Bonnie J. Nagel, Kilian M. Pohl, Kenneth J. Sher, Sandra A.
-              Brown, Susan F. Tapert &amp; Wesley K. Thompson h.</span>
-            <span class="pub-title">Structural brain recovery following reductions in adolescent and young adult binge
-              drinking: A longitudinal NCANDA study.</span>
-            <span class="pub-venue"><em>ScienceDirect</em>, 77. 101653.</span>
-            <span class="pub-links">
-              <a href="https://doi.org/10.1016/j.dcn.2025.101653" target="_blank">DOI</a> · <a
-                href="https://www.sciencedirect.com/science/article/pii/S1878929325001495/pdfft?md5=1ed2c9a6137f7ce97015f4703aea2347&pid=1-s2.0-S1878929325001495-main.pdf"
-                target="_blank">PDF</a>
+              <a href="https://doi.org/10.1038/s44220-026-00585-w" target="_blank" rel="noopener">DOI</a> · <a
+                href="https://www.nature.com/articles/s44220-026-00585-w.pdf" target="_blank" rel="noopener">PDF</a>
             </span>
           </li>
         </ol>
@@ -190,34 +233,30 @@
         <div class="pub-year">2025</div>
         <ol class="pub-list">
           <li class="pub">
-            <span class="pub-authors">Bohan Xu, Katherine L. Forthman, Rayus Kuplicki, Jonathan Ahern, Robert
-              Loughnan, Firas Naber, Wesley K. Thompson, Charles
-              B. Nemeroff, MD, Martin P. Paulus &amp; Chun Chieh Fan.</span>
-            <span class="pub-title">Genetic Correlates of Treatment-Resistant Depression.</span>
-            <span class="pub-venue"><em>JAMA Psychiatry</em>, 82(5). 505–513.</span>
+            <span class="pub-authors">Marybel R. Gonzalez, Ty Brumback, Madison K. Wickershiem, Edith V. Sullivan, Adolf
+              Pfefferbaum, Duncan B. Clark, David B. Goldston, M.J. Meloy, Firas Naber, Eva M. Müller-Oehring, Angelica
+              M. Morales, Fiona C. Baker, Kate B. Nooner, Bonnie J. Nagel, Kilian M. Pohl, Kenneth J. Sher, Sandra A.
+              Brown, Susan F. Tapert &amp; Wesley K. Thompson.</span>
+            <span class="pub-title">Structural brain recovery following reductions in adolescent and young adult binge
+              drinking: A longitudinal NCANDA study.</span>
+            <span class="pub-venue"><em>Developmental Cognitive Neuroscience</em>, 77, 101653.</span>
             <span class="pub-links">
-              <a href="https://doi.org/10.1001/jamapsychiatry.2024.4825" target="_blank">DOI</a> · <a
-                href="https://www.laureateinstitute.org/uploads/1/4/1/3/141382282/jamapsychiatry_xu_2025_oi_240097_1739289944.00263.pdf"
-                target="_blank">PDF</a>
+              <a href="https://doi.org/10.1016/j.dcn.2025.101653" target="_blank" rel="noopener">DOI</a> · <a
+                href="https://www.sciencedirect.com/science/article/pii/S1878929325001495/pdfft?md5=1ed2c9a6137f7ce97015f4703aea2347&pid=1-s2.0-S1878929325001495-main.pdf"
+                target="_blank" rel="noopener">PDF</a>
             </span>
           </li>
-        </ol>
-      </div>
 
-      <div class="pub-year-group">
-        <div class="pub-year">2024</div>
-        <ol class="pub-list">
           <li class="pub">
-            <span class="pub-authors">Bohan Xu, Katherine L. Forthman, Rayus Kuplicki, Jonathan Ahern,
-              Robert Loughnan, Firas Naber, Wesley K. Thompson, Charles B. Nemeroff, Martin P. Paulus,
-              Chun Chieh Fan.</span>
-            <span class="pub-title">Genetic Correlates of Treatment-Resistant Depression: Insights from Polygenic
-              Scores Across Cognitive, Temperamental, and Sleep Traits in the All of US cohort.</span>
-            <span class="pub-venue"><em>National Library of Medicine</em>.</span>
+            <span class="pub-authors">Bohan Xu, Katherine L. Forthman, Rayus Kuplicki, Jonathan Ahern, Robert
+              Loughnan, Firas Naber, Wesley K. Thompson, Charles
+              B. Nemeroff, Martin P. Paulus &amp; Chun Chieh Fan.</span>
+            <span class="pub-title">Genetic Correlates of Treatment-Resistant Depression.</span>
+            <span class="pub-venue"><em>JAMA Psychiatry</em>, 82(5), 505–513.</span>
             <span class="pub-links">
-              <a href="https://doi.org/10.1101/2024.07.03.24309914" target="_blank">DOI</a> · <a
-                href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11245070/pdf/nihpp-2024.07.03.24309914v1.pdf"
-                target="_blank">PDF</a>
+              <a href="https://doi.org/10.1001/jamapsychiatry.2024.4825" target="_blank" rel="noopener">DOI</a> · <a
+                href="https://www.laureateinstitute.org/uploads/1/4/1/3/141382282/jamapsychiatry_xu_2025_oi_240097_1739289944.00263.pdf"
+                target="_blank" rel="noopener">PDF</a>
             </span>
           </li>
         </ol>
@@ -259,7 +298,6 @@
     </section>
 
     <footer>
-      <span>© 2026 Firas Naber</span>
       <span>Last updated April 2026</span>
     </footer>
 
