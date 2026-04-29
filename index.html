@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firas Naber — Portfolio</title>
+  <script>
+    // Set theme synchronously before paint to prevent flash
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = stored || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <nav class="topnav">
+    <div class="nav-inner">
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
+        <a href="#education">Education</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4" />
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <header>
+      <h1>Firas Naber</h1>
+      <p class="tagline">Computer Science · Data Science · Distributed Systems</p>
+      <div class="contact">
+        <a href="mailto:firasnaber@gmail.com">firasnaber@gmail.com</a>
+        <span>·</span>
+        <a href="https://www.linkedin.com/in/firasnaber" target="_blank">LinkedIn</a>
+        <span>·</span>
+        <a href="https://www.github.com/firasnaber" target="_blank">GitHub</a>
+        <span>·</span>
+        <a href="#">CV (PDF)</a>
+      </div>
+    </header>
+
+    <section class="about" id="about">
+      <p>
+        I'm a graduate student in Computer Science at the Georgia Institute of Technology,
+        with 3+ years of research interests spanning large-scale data analysis, statistical modeling,
+        and distributed systems. My work has ranged from processing healthcare records
+        for hundreds of millions of individuals to building concurrent systems in C and C++.
+      </p>
+    </section>
+
+    <section id="experience">
+      <h2>Experience</h2>
+
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Graduate Research Assistant</span>
+          <span class="entry-date">Jan 2025 — Dec 2025</span>
+        </div>
+        <div class="entry-sub">University of Tulsa, Tulsa, OK</div>
+        <ul>
+          <li>Processed and analyzed healthcare data from 278M individuals using SQL and Python (Pandas, NumPy).</li>
+          <li>Automated the generation of 3,000 logistic regression models for disease-risk prediction.</li>
+          <li>Implemented 10,000 Cox proportional hazards models in R for survival analysis across clinical datasets.
+          </li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Data Scientist</span>
+          <span class="entry-date">Nov 2022 — Jan 2025</span>
+        </div>
+        <div class="entry-sub">Laureate Institute for Brain Research, Tulsa, OK</div>
+        <ul>
+          <li>Built SEM, GLMs, and random-forest models on behavioral and clinical data from up to 200K subjects.</li>
+          <li>Automated preprocessing pipelines for genomic data in Python and SQL, reducing cleaning time by 60%.</li>
+          <li>Designed and executed 9 longitudinal studies on associations between brain structure and mental health.
+          </li>
+          <li>Developed ETL pipelines using PySpark on GCP, processing and warehousing 138M records.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Software Engineer Intern</span>
+          <span class="entry-date">Jun 2022 — Aug 2022</span>
+        </div>
+        <div class="entry-sub">Eagle Creek, Vermillion, SD</div>
+        <ul>
+          <li>Built a recommendation system backend in Java with Spring Boot, Hibernate, and REST APIs.</li>
+          <li>Optimized PostgreSQL query performance via indexing strategies, cutting response times by 15%.</li>
+          <li>Wrote unit and integration tests in JUnit to validate API functionality and improve reliability.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+
+      <div class="project">
+        <div class="project-title">gRPC-Based Distributed File System</div>
+        <div class="project-meta">C++ · gRPC · concurrency · code available on request</div>
+        <p class="project-desc">
+          A distributed file system using gRPC streaming RPCs for chunk-based file transfer
+          across a client–server architecture. Includes a multi-client synchronization protocol
+          with CRC checksums and timestamp-based conflict resolution, asynchronous callback
+          handling via completion queues, and thread-safe concurrency control using mutexes,
+          condition variables, and server-side write locks.
+        </p>
+      </div>
+
+      <div class="project">
+        <div class="project-title">Multithreaded HTTP Proxy with Shared-Memory Cache</div>
+        <div class="project-meta">C · pthreads · POSIX IPC · code available on request</div>
+        <p class="project-desc">
+          A high-performance HTTP proxy using pthreads and libcurl to concurrently fetch and
+          stream content to multiple clients. Implements an IPC-based caching layer with POSIX
+          shared memory, message queues, and semaphores; chunked data transfer via mmap-backed
+          shared memory to minimize redundant copies; and a synchronized segment pool to prevent
+          race conditions under concurrent load.
+        </p>
+      </div>
+    </section>
+
+    <section id="publications">
+      <h2>Publications</h2>
+
+      <div class="pub-year-group">
+        <div class="pub-year">2026</div>
+        <ol class="pub-list">
+          <li class="pub">
+            <span class="pub-authors">Haixia Zheng, Jonathan Savitz, Ebrahim Haroon, Jonathan Ahern, Robert J.
+              Loughnan, Firas Naber, Bohan Xu, Katherine L. Forthman, Robin L. Aupperle, Leanne M. Williams, Martin P.
+              Paulus, Chun Chieh Fan &amp; Wesley K. Thompson.</span>
+            <span class="pub-title">Polygenic score for C-reactive protein is linked to faster cortical thinning and
+              psychopathology risk in adolescents.</span>
+            <span class="pub-venue"><em>Nature</em>, 4, 427–438.</span>
+            <span class="pub-links">
+              <a href="https://doi.org/10.1038/s44220-026-00585-w" target="_blank">DOI</a> · <a
+                href="https://www.nature.com/articles/s44220-026-00585-w.pdf" target="_blank">PDF</a>
+            </span>
+
+          <li class="pub">
+            <span class="pub-authors">Marybel R. Gonzalez, Ty Brumback, Madison K. Wickershiem, Edith V. Sullivan, Adolf
+              Pfefferbaum, Duncan B. Clark, David B. Goldston, M.J. Meloy, Firas Naber, Eva M. Müller-Oehring, Angelica
+              M. Morales, Fiona C. Baker, Kate B. Nooner, Bonnie J. Nagel, Kilian M. Pohl, Kenneth J. Sher, Sandra A.
+              Brown, Susan F. Tapert &amp; Wesley K. Thompson h.</span>
+            <span class="pub-title">Structural brain recovery following reductions in adolescent and young adult binge
+              drinking: A longitudinal NCANDA study.</span>
+            <span class="pub-venue"><em>ScienceDirect</em>, 77. 101653.</span>
+            <span class="pub-links">
+              <a href="https://doi.org/10.1016/j.dcn.2025.101653" target="_blank">DOI</a> · <a
+                href="https://www.sciencedirect.com/science/article/pii/S1878929325001495/pdfft?md5=1ed2c9a6137f7ce97015f4703aea2347&pid=1-s2.0-S1878929325001495-main.pdf"
+                target="_blank">PDF</a>
+            </span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="pub-year-group">
+        <div class="pub-year">2025</div>
+        <ol class="pub-list">
+          <li class="pub">
+            <span class="pub-authors">Bohan Xu, Katherine L. Forthman, Rayus Kuplicki, Jonathan Ahern, Robert
+              Loughnan, Firas Naber, Wesley K. Thompson, Charles
+              B. Nemeroff, MD, Martin P. Paulus &amp; Chun Chieh Fan.</span>
+            <span class="pub-title">Genetic Correlates of Treatment-Resistant Depression.</span>
+            <span class="pub-venue"><em>JAMA Psychiatry</em>, 82(5). 505–513.</span>
+            <span class="pub-links">
+              <a href="https://doi.org/10.1001/jamapsychiatry.2024.4825" target="_blank">DOI</a> · <a
+                href="https://www.laureateinstitute.org/uploads/1/4/1/3/141382282/jamapsychiatry_xu_2025_oi_240097_1739289944.00263.pdf"
+                target="_blank">PDF</a>
+            </span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="pub-year-group">
+        <div class="pub-year">2024</div>
+        <ol class="pub-list">
+          <li class="pub">
+            <span class="pub-authors">Bohan Xu, Katherine L. Forthman, Rayus Kuplicki, Jonathan Ahern,
+              Robert Loughnan, Firas Naber, Wesley K. Thompson, Charles B. Nemeroff, Martin P. Paulus,
+              Chun Chieh Fan.</span>
+            <span class="pub-title">Genetic Correlates of Treatment-Resistant Depression: Insights from Polygenic
+              Scores Across Cognitive, Temperamental, and Sleep Traits in the All of US cohort.</span>
+            <span class="pub-venue"><em>National Library of Medicine</em>.</span>
+            <span class="pub-links">
+              <a href="https://doi.org/10.1101/2024.07.03.24309914" target="_blank">DOI</a> · <a
+                href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11245070/pdf/nihpp-2024.07.03.24309914v1.pdf"
+                target="_blank">PDF</a>
+            </span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skills-label">Languages</div>
+        <div class="skills-list">Python, R, Java, SQL, C, C++</div>
+
+        <div class="skills-label">Frameworks &amp; Libraries</div>
+        <div class="skills-list">Pandas, NumPy, scikit-learn, Matplotlib, Spring Boot, Hibernate</div>
+
+        <div class="skills-label">Tools &amp; Systems</div>
+        <div class="skills-list">PySpark, GCP, Git, UNIX/Linux, gRPC</div>
+      </div>
+    </section>
+
+    <section id="education">
+      <h2>Education</h2>
+
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">M.S. in Computer Science</span>
+          <span class="entry-date">Expected Aug 2028</span>
+        </div>
+        <div class="entry-sub">Georgia Institute of Technology</div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">B.A. in Computer Science and Statistics</span>
+          <span class="entry-date">May 2022</span>
+        </div>
+        <div class="entry-sub">University of Minnesota</div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 Firas Naber</span>
+      <span>Last updated April 2026</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
