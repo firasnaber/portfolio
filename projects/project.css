@@ -1,0 +1,316 @@
+/* ─── Project page-specific styles ─────────────────── */
+
+.project-page-header {
+  padding-top: 32px;
+  padding-bottom: 16px;
+}
+
+.back-link {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  transition: all 0.2s;
+  margin-bottom: 40px;
+}
+
+.back-link:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+  transform: translateX(-3px);
+}
+
+.project-hero {
+  gap: 12px;
+}
+
+.project-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  padding: 5px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.project-hero h1 {
+  font-size: clamp(38px, 6vw, 60px);
+  line-height: 1.05;
+  text-align: center;
+  max-width: 720px;
+}
+
+.project-main {
+  text-align: left;
+}
+
+.project-main section {
+  margin-bottom: 64px;
+}
+
+.project-main h2 {
+  text-align: left;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+
+.project-main p {
+  color: var(--ink);
+  font-size: 16.5px;
+  line-height: 1.75;
+  margin-bottom: 14px;
+}
+
+.project-main code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--bg-alt);
+  color: var(--accent);
+  padding: 1px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--rule);
+}
+
+.project-main strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ─── Code blocks ──────────────────────────────────── */
+
+.code-block {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.65;
+  background: var(--bg-alt);
+  color: var(--ink);
+  border: 1.5px solid var(--rule);
+  border-radius: 14px;
+  padding: 22px 26px;
+  overflow-x: auto;
+  margin: 18px 0;
+}
+
+.code-block code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* ─── Prism.js syntax highlighting (warm theme) ────── */
+
+.code-block .token.comment,
+.code-block .token.prolog,
+.code-block .token.doctype,
+.code-block .token.cdata {
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.code-block .token.keyword {
+  color: var(--accent-4);
+  font-weight: 600;
+}
+
+.code-block .token.builtin,
+.code-block .token.class-name {
+  color: var(--accent-3);
+  font-weight: 500;
+}
+
+.code-block .token.function {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.code-block .token.string,
+.code-block .token.char,
+.code-block .token.attr-value {
+  color: var(--accent-2);
+}
+
+.code-block .token.number,
+.code-block .token.boolean,
+.code-block .token.constant {
+  color: var(--accent-3);
+}
+
+.code-block .token.operator,
+.code-block .token.punctuation {
+  color: var(--ink-soft);
+}
+
+.code-block .token.property,
+.code-block .token.attr-name {
+  color: var(--accent);
+}
+
+.code-block .token.namespace {
+  opacity: 0.7;
+}
+
+/* ─── Design table ─────────────────────────────────── */
+
+.design-table-wrap {
+  margin-top: 24px;
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1.5px solid var(--rule);
+  background: var(--bg-alt);
+}
+
+.design-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.design-table thead {
+  background: var(--bg);
+  border-bottom: 1.5px solid var(--rule);
+}
+
+.design-table th {
+  font-family: var(--display);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 60, "opsz" 24;
+  text-align: left;
+  padding: 14px 18px;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.design-table td {
+  padding: 14px 18px;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.design-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.design-table td:first-child {
+  color: var(--accent-2);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ─── Mermaid diagrams ─────────────────────────────── */
+
+.diagram {
+  background: var(--bg-alt);
+  border: 1.5px solid var(--rule);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 18px 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.diagram .mermaid {
+  display: inline-block;
+  min-width: 100%;
+}
+
+/* Mermaid override polish */
+.diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.diagram .cluster rect {
+  fill: var(--bg) !important;
+  stroke: var(--rule) !important;
+  stroke-width: 1.5px !important;
+}
+
+.diagram .cluster .cluster-label {
+  font-family: var(--display) !important;
+  font-weight: 600 !important;
+}
+
+.diagram .node rect,
+.diagram .node polygon,
+.diagram .node circle {
+  stroke-width: 1.5px !important;
+}
+
+.diagram .edgeLabel {
+  background: var(--bg) !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-family: var(--mono) !important;
+  font-size: 12px !important;
+}
+
+/* ─── Footer back link ─────────────────────────────── */
+
+.back-link-footer {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.back-link-footer:hover {
+  color: var(--accent);
+}
+
+/* ─── Responsive ──────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .project-page-header {
+    padding-top: 20px;
+  }
+
+  .back-link {
+    margin-bottom: 28px;
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+
+  .project-main h2 {
+    font-size: 23px;
+  }
+
+  .project-main p {
+    font-size: 15.5px;
+  }
+
+  .code-block {
+    font-size: 12px;
+    padding: 16px 18px;
+  }
+
+  .design-table {
+    font-size: 13px;
+  }
+
+  .design-table th,
+  .design-table td {
+    padding: 11px 12px;
+  }
+
+  .diagram {
+    padding: 14px;
+  }
+}

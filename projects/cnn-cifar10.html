@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CNN Image Classification on CIFAR-10 — Firas Naber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="project.css">
+</head>
+
+<body>
+
+  <header class="page-header project-page-header">
+    <a href="../index.html" class="back-link">← Back to portfolio</a>
+
+    <div class="hero project-hero">
+      <h1>CNN Image Classification on CIFAR-10</h1>
+      <p class="tagline">A convolutional neural network that classifies 32×32 color images across 10 categories.</p>
+      <div class="project-tag">Python · TensorFlow · Keras</div>
+    </div>
+  </header>
+
+  <main class="main project-main">
+
+    <section>
+      <h2>Purpose</h2>
+      <p>
+        Build a model to classify images into ten predetermined categories, then iterate on architecture
+        and training choices to reduce loss and improve accuracy. Python was the implementation language
+        of choice for its mature machine-learning ecosystem (TensorFlow / Keras) and strong tooling for
+        data access and transformation.
+      </p>
+    </section>
+
+    <section>
+      <h2>Dataset</h2>
+      <p>
+        The model was trained on the <strong>CIFAR-10</strong> dataset: 60,000 color images at 32×32
+        resolution, split into 50,000 training images and 10,000 test images. The training data is
+        distributed across five batches of 10,000 images; the test batch contains exactly 1,000 randomly
+        selected images per class.
+      </p>
+      <p>The ten mutually exclusive classes:</p>
+
+      <div class="design-table-wrap">
+        <table class="design-table">
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Class</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>airplane</td><td>—</td></tr>
+            <tr><td>1</td><td>automobile</td><td>sedans, SUVs, etc.</td></tr>
+            <tr><td>2</td><td>bird</td><td>—</td></tr>
+            <tr><td>3</td><td>cat</td><td>—</td></tr>
+            <tr><td>4</td><td>deer</td><td>—</td></tr>
+            <tr><td>5</td><td>dog</td><td>—</td></tr>
+            <tr><td>6</td><td>frog</td><td>—</td></tr>
+            <tr><td>7</td><td>horse</td><td>—</td></tr>
+            <tr><td>8</td><td>ship</td><td>—</td></tr>
+            <tr><td>9</td><td>truck</td><td>large trucks only</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Pipeline</h2>
+      <p>The end-to-end flow from raw dataset to a trained classifier:</p>
+      <div class="diagram">
+        <pre class="mermaid">
+flowchart TD
+    A["Load CIFAR-10<br/>(50K train / 10K test)"]
+    B["Normalize pixel values<br/>divide by 255 → [0, 1]"]
+    C["Build convolutional base<br/>3 × Conv2D + 2 × MaxPool"]
+    D["Add dense head<br/>Flatten → Dense(64) → Dense(10)"]
+    E["Compile<br/>Adam + SparseCategoricalCrossentropy"]
+    F["Train for 10 epochs<br/>with validation set"]
+    G["Trained classifier"]
+
+    A --> B --> C --> D --> E --> F --> G
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Data Normalization</h2>
+      <p>
+        Pixel values are scaled to the <code>[0, 1]</code> range by dividing by 255. This keeps inputs
+        on a consistent, small scale, which helps gradient descent converge.
+      </p>
+      <pre class="code-block"><code class="language-python">(train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
+
+train_images, test_images = train_images / 255.0, test_images / 255.0</code></pre>
+    </section>
+
+    <section>
+      <h2>Convolutional Base</h2>
+      <p>
+        Because the input is image data, the model uses a Convolutional Neural Network (CNN). After
+        experimenting with several depths, the final base uses three <code>Conv2D</code> layers with two
+        <code>MaxPooling2D</code> layers interleaved between them. The CNN accepts 32×32 RGB tensors
+        (32×32×3) and uses ReLU as the activation throughout the convolutional layers.
+      </p>
+      <pre class="code-block"><code class="language-python">import tensorflow as tf
+from tensorflow.keras import datasets, layers, models
+
+model = models.Sequential()
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))</code></pre>
+      <p>
+        The width and height dimensions shrink as you go deeper into the network. The number of output
+        channels for each <code>Conv2D</code> layer is controlled by the first <code>Conv2D</code> layer,
+        which holds the input image configuration.
+      </p>
+    </section>
+
+    <section>
+      <h2>Dense Head</h2>
+      <p>
+        Two <code>Dense</code> layers sit on top of the convolutional base. The 3D feature map from the
+        last convolution is first flattened into a 1D vector. The final layer has 10 outputs — one per
+        class — and uses softmax to produce a probability distribution.
+      </p>
+      <pre class="code-block"><code class="language-python">model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='softmax'))
+model.add(layers.Dense(10))</code></pre>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <p>The full layer-by-layer model with output shapes and parameter counts:</p>
+      <div class="diagram">
+        <pre class="mermaid">
+flowchart TD
+    A["Input<br/>(32, 32, 3)"]
+    B["Conv2D · 32 filters · 3×3 · ReLU<br/>output: (30, 30, 32) · 896 params"]
+    C["MaxPooling2D · 2×2<br/>output: (15, 15, 32)"]
+    D["Conv2D · 64 filters · 3×3 · ReLU<br/>output: (13, 13, 64) · 18,496 params"]
+    E["MaxPooling2D · 2×2<br/>output: (6, 6, 64)"]
+    F["Conv2D · 64 filters · 3×3 · ReLU<br/>output: (4, 4, 64) · 36,928 params"]
+    G["Flatten<br/>output: (1024,)"]
+    H["Dense · 64 units · softmax<br/>65,600 params"]
+    I["Dense · 10 units (logits)<br/>650 params"]
+    J["Output: 10 class scores<br/>total: 122,570 params"]
+
+    A --> B --> C --> D --> E --> F --> G --> H --> I --> J
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Compile and Train</h2>
+      <p>
+        Adam was chosen as the optimizer — generally a strong default among adaptive optimizers. The loss
+        is sparse categorical cross-entropy on logits. Training runs for 10 epochs, validating on the
+        held-out test set after each epoch.
+      </p>
+      <pre class="code-block"><code class="language-python">model.compile(
+    optimizer='adam',
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    metrics=['accuracy'],
+)
+
+history = model.fit(
+    train_images, train_labels,
+    epochs=10,
+    validation_data=(test_images, test_labels),
+)</code></pre>
+    </section>
+
+    <section>
+      <h2>Design Experiments</h2>
+      <p>
+        The final architecture is the result of several iterations on layer count, training duration,
+        activation choice, and regularization. The table below summarizes what was tried and what stuck:
+      </p>
+
+      <div class="design-table-wrap">
+        <table class="design-table">
+          <thead>
+            <tr>
+              <th>Knob</th>
+              <th>What was tried</th>
+              <th>What stuck and why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Layer count</td>
+              <td>Different numbers of Conv2D / pooling layers</td>
+              <td>3 Conv2D + 2 MaxPool — adding more layers did not measurably improve accuracy or loss</td>
+            </tr>
+            <tr>
+              <td>Epochs</td>
+              <td>3–4, 10, 20, and 25</td>
+              <td>10 — fewer than 10 underfits visibly; 20–25 doesn't justify the extra training time</td>
+            </tr>
+            <tr>
+              <td>Final-layer activation</td>
+              <td>softmax vs. ReLU on the output Dense layer</td>
+              <td>softmax — accuracy was similar, but softmax matches the standard practice for class probabilities</td>
+            </tr>
+            <tr>
+              <td>Dropout</td>
+              <td>Dropout regularization at varying rates</td>
+              <td>Skipped — dropout did not meaningfully improve accuracy or overfitting in this setup</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      <a href="../index.html" class="back-link-footer">← Back to portfolio</a>
+      <span class="footer-meta">Last updated May 2026</span>
+    </footer>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-protobuf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.Prism) Prism.highlightAll();
+    });
+  </script>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        fontFamily: 'Plus Jakarta Sans, sans-serif',
+        fontSize: '14px',
+        primaryColor: '#f4ead8',
+        primaryTextColor: '#2a1f17',
+        primaryBorderColor: '#d2552e',
+        lineColor: '#9a8978',
+        secondaryColor: '#fdf6ec',
+        tertiaryColor: '#fdf6ec',
+        background: '#fdf6ec',
+        mainBkg: '#f4ead8',
+        secondBkg: '#fdf6ec',
+        clusterBkg: '#fdf6ec',
+        clusterBorder: '#e3d4ba',
+        edgeLabelBackground: '#fdf6ec',
+        nodeTextColor: '#2a1f17'
+      },
+      flowchart: {
+        curve: 'basis',
+        padding: 16,
+        nodeSpacing: 40,
+        rankSpacing: 50,
+        htmlLabels: true
+      }
+    });
+  </script>
+
+</body>
+
+</html>

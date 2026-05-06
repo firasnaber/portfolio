@@ -4,71 +4,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Firas Naber — Portfolio</title>
-  <script>
-    // Set theme synchronously before paint to prevent flash
-    (function () {
-      try {
-        var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = stored || (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    })();
-  </script>
+  <title>Firas Naber</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-  <nav class="topnav">
-    <div class="nav-inner">
-      <div class="nav-links">
-        <a href="#about">About</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#publications">Publications</a>
-        <a href="#education">Education</a>
-      </div>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4" />
-          <path
-            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-        </svg>
-      </button>
-    </div>
-  </nav>
+  <header class="page-header">
+    <nav class="topnav">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#publications">Publications</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+    </nav>
 
-  <div class="container">
-
-    <header>
+    <div class="hero">
+      <div class="wave">👋</div>
       <h1>Firas Naber</h1>
-      <p class="tagline">Data Scientist · Graduate Student at Georgia Tech</p>
-      <div class="contact">
-        <a href="mailto:firasnaber@gmail.com">firasnaber@gmail.com</a>
-        <span>·</span>
+      <p class="tagline">Data Scientist <span class="dot">•</span> Graduate Student at Georgia Tech</p>
+      <div class="hero-links">
+        <a href="mailto:firasnaber@gmail.com">Email</a>
         <a href="https://www.linkedin.com/in/firasnaber" target="_blank" rel="noopener">LinkedIn</a>
-        <span>·</span>
         <a href="https://www.github.com/firasnaber" target="_blank" rel="noopener">GitHub</a>
-        <span>·</span>
-        <a href="assets/resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a href="assets/resume.pdf" target="_blank" rel="noopener">Resume</a>
       </div>
-    </header>
+    </div>
+  </header>
+
+  <main class="main">
 
     <section class="about" id="about">
+      <h2>About</h2>
       <p>
         I'm a part-time graduate student in Computer Science at the Georgia Institute of Technology,
         with 3+ years of experience in research and applied data science spanning large-scale data analysis, statistical
@@ -81,11 +54,11 @@
       <h2>Experience</h2>
 
       <div class="entry">
+        <div class="entry-title">Graduate Research Assistant</div>
         <div class="entry-head">
-          <span class="entry-title">Graduate Research Assistant</span>
+          <span class="entry-sub">University of Tulsa, Tulsa, OK</span>
           <span class="entry-date">Jan 2025 — Dec 2025</span>
         </div>
-        <div class="entry-sub">University of Tulsa, Tulsa, OK</div>
         <ul>
           <li>Processed and analyzed healthcare data from 278M individuals using SQL and Python (Pandas, NumPy).</li>
           <li>Automated the generation of 3,000 logistic regression models for disease-risk prediction.</li>
@@ -95,11 +68,11 @@
       </div>
 
       <div class="entry">
+        <div class="entry-title">Data Scientist</div>
         <div class="entry-head">
-          <span class="entry-title">Data Scientist</span>
+          <span class="entry-sub">Laureate Institute for Brain Research, Tulsa, OK</span>
           <span class="entry-date">Nov 2022 — Jan 2025</span>
         </div>
-        <div class="entry-sub">Laureate Institute for Brain Research, Tulsa, OK</div>
         <ul>
           <li>Built SEM, GLMs, and random-forest models on behavioral and clinical data from up to 200K subjects.</li>
           <li>Automated preprocessing pipelines for genomic data in Python and SQL, reducing cleaning time by 60%.</li>
@@ -110,11 +83,11 @@
       </div>
 
       <div class="entry">
+        <div class="entry-title">Software Engineer Intern</div>
         <div class="entry-head">
-          <span class="entry-title">Software Engineer Intern</span>
+          <span class="entry-sub">Eagle Creek, Vermillion, SD</span>
           <span class="entry-date">Jun 2022 — Aug 2022</span>
         </div>
-        <div class="entry-sub">Eagle Creek, Vermillion, SD</div>
         <ul>
           <li>Built a recommendation system backend in Java with Spring Boot, Hibernate, and REST APIs.</li>
           <li>Optimized PostgreSQL query performance via indexing strategies, cutting response times by 15%.</li>
@@ -126,9 +99,10 @@
     <section id="projects">
       <h2>Projects</h2>
 
-      <div class="project">
-        <div class="project-title">gRPC-Based Distributed File System</div>
-        <div class="project-meta">C++ · gRPC · concurrency · code available on request</div>
+      <a class="project project-link" href="projects/grpc-dfs.html">
+        <div class="project-title">gRPC-Based Distributed File System <span class="project-arrow">→</span></div>
+        <div class="project-meta">C++ <span class="sep">/</span> gRPC <span class="sep">/</span> concurrency <span
+            class="sep">/</span> code available on request</div>
         <p class="project-desc">
           A distributed file system using gRPC streaming RPCs for chunk-based file transfer
           across a client–server architecture. Includes a multi-client synchronization protocol
@@ -136,11 +110,12 @@
           handling via completion queues, and thread-safe concurrency control using mutexes,
           condition variables, and server-side write locks.
         </p>
-      </div>
+      </a>
 
       <div class="project">
         <div class="project-title">Multithreaded HTTP Proxy with Shared-Memory Cache</div>
-        <div class="project-meta">C · pthreads · POSIX IPC · code available on request</div>
+        <div class="project-meta">C <span class="sep">/</span> pthreads <span class="sep">/</span> POSIX IPC <span
+            class="sep">/</span> code available on request</div>
         <p class="project-desc">
           A high-performance HTTP proxy using pthreads and libcurl to concurrently fetch and
           stream content to multiple clients. Implements an IPC-based caching layer with POSIX
@@ -152,7 +127,8 @@
 
       <div class="project">
         <div class="project-title">EvoTSP: Genetic Algorithm Visualizer for the Traveling Salesman Problem</div>
-        <div class="project-meta">JavaScript · Node.js · AWS (EC2, Lambda, DynamoDB, IAM) · Leaflet · <a
+        <div class="project-meta">JavaScript <span class="sep">/</span> Node.js <span class="sep">/</span> AWS (EC2,
+          Lambda, DynamoDB, IAM) <span class="sep">/</span> Leaflet <span class="sep">/</span> <a
             href="https://github.com/firasnaber/tsp" target="_blank" rel="noopener">GitHub</a></div>
         <p class="project-desc">
           A Traveling Salesman visualizer with a Node.js backend deployed on AWS (EC2, Lambda,
@@ -165,7 +141,8 @@
 
       <div class="project">
         <div class="project-title">Genetic Algorithm for the 0-1 Knapsack Problem</div>
-        <div class="project-meta">Python · genetic algorithms · simulated annealing · <a
+        <div class="project-meta">Python <span class="sep">/</span> genetic algorithms <span class="sep">/</span>
+          simulated annealing <span class="sep">/</span> <a
             href="https://github.com/firasnaber/genetic-algorithm-01-knapsack" target="_blank" rel="noopener">GitHub</a>
         </div>
         <p class="project-desc">
@@ -177,9 +154,12 @@
         </p>
       </div>
 
-      <div class="project">
-        <div class="project-title">CNN Image Classification on CIFAR-10</div>
-        <div class="project-meta">Python · TensorFlow / Keras · <a
+      <div class="project project-card">
+        <div class="project-title">
+          <a class="project-stretched" href="projects/cnn-cifar10.html">CNN Image Classification on CIFAR-10</a>
+          <span class="project-arrow">→</span>
+        </div>
+        <div class="project-meta">Python <span class="sep">/</span> TensorFlow / Keras <span class="sep">/</span> <a
             href="https://github.com/firasnaber/cnn-image-classification" target="_blank" rel="noopener">GitHub</a>
         </div>
         <p class="project-desc">
@@ -194,7 +174,9 @@
 
       <div class="project">
         <div class="project-title">DoorBoard: Faculty Announcement Web App</div>
-        <div class="project-meta">Angular · TypeScript · Java · MongoDB · Auth0 · Docker · co-authored coursework · <a
+        <div class="project-meta">Angular <span class="sep">/</span> TypeScript <span class="sep">/</span> Java <span
+            class="sep">/</span> MongoDB <span class="sep">/</span> Auth0 <span class="sep">/</span> Docker <span
+            class="sep">/</span> co-authored coursework <span class="sep">/</span> <a
             href="https://github.com/firasnaber/DoorBoard" target="_blank" rel="noopener">GitHub</a></div>
         <p class="project-desc">
           A full-stack web application built with a team during a software-design course,
@@ -222,8 +204,9 @@
               psychopathology risk in adolescents.</span>
             <span class="pub-venue"><em>Nature Mental Health</em>, 4, 427–438.</span>
             <span class="pub-links">
-              <a href="https://doi.org/10.1038/s44220-026-00585-w" target="_blank" rel="noopener">DOI</a> · <a
-                href="https://www.nature.com/articles/s44220-026-00585-w.pdf" target="_blank" rel="noopener">PDF</a>
+              <a href="https://doi.org/10.1038/s44220-026-00585-w" target="_blank" rel="noopener">DOI</a> <span
+                class="sep">/</span> <a href="https://www.nature.com/articles/s44220-026-00585-w.pdf" target="_blank"
+                rel="noopener">PDF</a>
             </span>
           </li>
         </ol>
@@ -241,7 +224,8 @@
               drinking: A longitudinal NCANDA study.</span>
             <span class="pub-venue"><em>Developmental Cognitive Neuroscience</em>, 77, 101653.</span>
             <span class="pub-links">
-              <a href="https://doi.org/10.1016/j.dcn.2025.101653" target="_blank" rel="noopener">DOI</a> · <a
+              <a href="https://doi.org/10.1016/j.dcn.2025.101653" target="_blank" rel="noopener">DOI</a> <span
+                class="sep">/</span> <a
                 href="https://www.sciencedirect.com/science/article/pii/S1878929325001495/pdfft?md5=1ed2c9a6137f7ce97015f4703aea2347&pid=1-s2.0-S1878929325001495-main.pdf"
                 target="_blank" rel="noopener">PDF</a>
             </span>
@@ -254,7 +238,8 @@
             <span class="pub-title">Genetic Correlates of Treatment-Resistant Depression.</span>
             <span class="pub-venue"><em>JAMA Psychiatry</em>, 82(5), 505–513.</span>
             <span class="pub-links">
-              <a href="https://doi.org/10.1001/jamapsychiatry.2024.4825" target="_blank" rel="noopener">DOI</a> · <a
+              <a href="https://doi.org/10.1001/jamapsychiatry.2024.4825" target="_blank" rel="noopener">DOI</a> <span
+                class="sep">/</span> <a
                 href="https://www.laureateinstitute.org/uploads/1/4/1/3/141382282/jamapsychiatry_xu_2025_oi_240097_1739289944.00263.pdf"
                 target="_blank" rel="noopener">PDF</a>
             </span>
@@ -266,7 +251,7 @@
     <section id="skills">
       <h2>Skills</h2>
       <div class="skills-grid">
-        <div class="skills-label">Languages</div>
+        <div class="skills-label">Programming Languages</div>
         <div class="skills-list">Python, R, SQL, C, C++, Java, JavaScript, TypeScript</div>
 
         <div class="skills-label">Frameworks &amp; Libraries</div>
@@ -288,27 +273,33 @@
       <h2>Education</h2>
 
       <div class="entry">
+        <div class="entry-title">M.S. in Computer Science</div>
         <div class="entry-head">
-          <span class="entry-title">M.S. in Computer Science</span>
+          <span class="entry-sub">Georgia Institute of Technology</span>
           <span class="entry-date">Expected Aug 2028</span>
         </div>
-        <div class="entry-sub">Georgia Institute of Technology</div>
       </div>
 
       <div class="entry">
+        <div class="entry-title">B.A. in Computer Science and Statistics</div>
         <div class="entry-head">
-          <span class="entry-title">B.A. in Computer Science and Statistics</span>
+          <span class="entry-sub">University of Minnesota</span>
           <span class="entry-date">May 2022</span>
         </div>
-        <div class="entry-sub">University of Minnesota</div>
       </div>
     </section>
 
     <footer>
-      <span>Last updated April 2026</span>
+      <div class="footer-contact">
+        <a href="mailto:firasnaber@gmail.com">firasnaber@gmail.com</a>
+        <a href="https://www.linkedin.com/in/firasnaber" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.github.com/firasnaber" target="_blank" rel="noopener">GitHub</a>
+        <a href="assets/resume.pdf" target="_blank" rel="noopener">Resume PDF</a>
+      </div>
+      <span class="footer-meta">Last updated May 2026</span>
     </footer>
 
-  </div>
+  </main>
 
   <script src="script.js"></script>
 

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gRPC Distributed File System — Firas Naber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="project.css">
+</head>
+
+<body>
+
+  <header class="page-header project-page-header">
+    <a href="../index.html" class="back-link">← Back to portfolio</a>
+
+    <div class="hero project-hero">
+      <h1>gRPC-Based Distributed File System</h1>
+      <p class="tagline">A distributed file system extending an RPC service with synchronization and concurrency
+        control.</p>
+      <div class="project-tag">C++ · gRPC</div>
+    </div>
+  </header>
+
+  <main class="main project-main">
+
+    <section>
+      <h2>Purpose</h2>
+      <p>
+        Build a distributed file system (DFS), similar to the Andrew File System approach, by extending an
+        underlying RPC layer with synchronization and concurrency control across multiple clients.
+      </p>
+    </section>
+
+    <section>
+      <h2>Design</h2>
+      <p>
+        The design adds synchronization logic on top of four core RPC operations — <code>Fetch</code>,
+        <code>Store</code>, <code>List</code>, and <code>Delete</code>. The goal is to keep multiple clients
+        consistent with the server while preventing two clients from modifying the same file at the same time.
+      </p>
+      <p>
+        The server is treated as the main source of truth. Clients compare their local files against the
+        server's file list and metadata, then decide whether a file needs to be fetched, stored, deleted,
+        or left unchanged.
+      </p>
+      <p>
+        Concurrency is handled with a <strong>write-lock system</strong>
+        (<code>std::map&lt;file_name, client_id&gt; write_locks</code> and an RPC <code>Lock()</code> method) on
+        the server. Before a client can store or delete a file, it must acquire the lock for that file. The
+        server tracks which client owns each lock and rejects write operations from clients that do not hold
+        the correct lock.
+      </p>
+      <p>
+        For synchronization updates, a <strong>callback/watcher mechanism</strong> is used. When the server
+        detects that files have changed, it signals waiting callback requests so clients can refresh their
+        local version of the affected files. <strong>CRC checksums</strong> and <strong>modification times</strong>
+        are used to compare file versions, avoiding unnecessary transfers when client and server already agree.
+      </p>
+
+      <div class="design-table-wrap">
+        <table class="design-table">
+          <thead>
+            <tr>
+              <th>Design Choice</th>
+              <th>Function</th>
+              <th>Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Write-lock system</td>
+              <td>Allows only one client to modify a file at a time</td>
+              <td>Prevents concurrent writes and keeps file contents consistent</td>
+            </tr>
+            <tr>
+              <td>Mutex + RAII (<code>std::lock_guard</code>)</td>
+              <td>Protects shared data structures from concurrent thread access</td>
+              <td>Avoids errors from manual locking</td>
+            </tr>
+            <tr>
+              <td>Condition variable for callbacks</td>
+              <td>Blocks and wakes threads when updates occur</td>
+              <td>Avoids busy-waiting with a straightforward implementation</td>
+            </tr>
+            <tr>
+              <td>CRC checksums</td>
+              <td>Detects differences in file contents</td>
+              <td>Easy to use and sufficient for project requirements</td>
+            </tr>
+            <tr>
+              <td>Modification times</td>
+              <td>Tracks file updates for synchronization decisions</td>
+              <td>Accurate and low overhead</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Service Interface</h2>
+      <p>The protobuf service definition exposed by the server:</p>
+      <pre class="code-block"><code class="language-protobuf">service DFSService {
+  // Store files on the server (streaming upload)
+  rpc Store(stream StoreRequest) returns (StoreResponse);
+
+  // Fetch files from the server (streaming download)
+  rpc Fetch(FetchRequest) returns (stream FetchResponse);
+
+  // List all files on the server
+  rpc List(ListRequest) returns (ListResponse);
+
+  // Get the status of a single file
+  rpc Stat(StatRequest) returns (StatResponse);
+
+  // Request a write lock from the server
+  rpc Lock(LockRequest) returns (LockResponse);
+
+  // Asynchronous file listing with attribute info (name, size, mtime)
+  rpc CallbackList(CallbackListRequest) returns (CallbackListResponse);
+
+  // Delete a file from the server
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>Server-Side Callback Flow</h2>
+      <p>
+        How the server receives an asynchronous <code>CallbackList</code> request, queues it, and signals
+        the waiting client when the file set changes:
+      </p>
+      <div class="diagram">
+        <pre class="mermaid">
+flowchart TD
+
+subgraph Client["Client"]
+    A["Client initiates async<br/>CallbackList RPC"]
+end
+
+subgraph Server["Server"]
+    B["RequestCallback()<br/>queues callback request"]
+    C["queued_tags stores<br/>pending request"]
+    D["queue_cv.notify_one()"]
+
+    E["Store() or Delete()<br/>modifies file"]
+    F["SignalServerChanged()<br/>sets server_changed = true<br/>and notifies queue_cv"]
+
+    I["ProcessQueuedRequests()<br/>waits on queue_cv"]
+    J{"queued_tags not empty<br/>AND server_changed?"}
+
+    K["Continue queued<br/>callback request"]
+    L["ProcessCallback()<br/>builds FileInfo list"]
+    O["Server sends<br/>callback response"]
+end
+
+subgraph Done["Client Processing"]
+    P["Client receives response"]
+    Q["HandleCallbackList()<br/>runs synchronization"]
+end
+
+A --> B --> C --> D --> I
+E --> F --> I
+
+I --> J
+J -- "No" --> I
+J -- "Yes" --> K --> L --> O --> P --> Q
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Client Synchronization Flow</h2>
+      <p>
+        After receiving a callback response, the client compares the server's file list to its local
+        directory and decides whether each file should be fetched, stored, or removed:
+      </p>
+      <div class="diagram">
+        <pre class="mermaid">
+flowchart TD
+    A["while completion_queue.Next()"]
+    B["SyncGuard guard(*this)"]
+    C["Build server_files map<br/>from call_data->reply"]
+    D["LocalList(&local_files)<br/>map local names to mtime"]
+
+    E["For each (name, info)<br/>in server_files"]
+    F{"File exists<br/>locally?"}
+    G["Fetch(name)"]
+    H["Compute local CRC<br/>and mtime"]
+    I{"CRC and mtime<br/>match server?"}
+    J["No action"]
+    K{"Compare mtimes"}
+    L["Fetch(name)"]
+    M["Store(name)"]
+    N["No action"]
+
+    O["For each file<br/>in local_files"]
+    P{"name in<br/>server_files?"}
+    Q["No action"]
+    R["Remove local file"]
+
+    S["delete call_data"]
+    T["InitCallbackList()"]
+
+    A --> B --> C --> D --> E
+    E --> F
+    F -- "No" --> G
+    F -- "Yes" --> H --> I
+    I -- "Yes" --> J
+    I -- "No" --> K
+    K -- "server newer" --> L
+    K -- "local newer" --> M
+    K -- "equal" --> N
+
+    G --> O
+    J --> O
+    L --> O
+    M --> O
+    N --> O
+
+    O --> P
+    P -- "Yes" --> Q
+    P -- "No" --> R
+
+    Q --> S
+    R --> S
+    S --> T
+    T -- "loop back" --> A
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>End-to-End Operation Flow</h2>
+      <p>
+        High-level view of how a single client operation moves through the system, from RPC dispatch on
+        the client to filesystem effects on the server:
+      </p>
+      <div class="diagram">
+        <pre class="mermaid">
+flowchart TD
+    A["Client Call<br/>Fetch / Store / Delete / List"]
+    B["Create gRPC context<br/>and set deadline"]
+    C["Acquire lock<br/>(if write op)"]
+    D["Send RPC Request"]
+    E["Server receives request"]
+
+    F{"Operation<br/>type"}
+
+    G["Read file<br/>and stream chunks"]
+    H["Receive chunks<br/>and write file"]
+    I["Remove file"]
+    J["Scan directory<br/>and collect metadata"]
+
+    K["Return data / status"]
+    L["Client receives response"]
+    M["Process result<br/>release lock if held"]
+
+    A --> B --> C --> D --> E --> F
+    F -- "Fetch" --> G --> K
+    F -- "Store" --> H --> K
+    F -- "Delete" --> I --> K
+    F -- "List" --> J --> K
+    K --> L --> M
+        </pre>
+      </div>
+    </section>
+
+    <footer>
+      <a href="../index.html" class="back-link-footer">← Back to portfolio</a>
+      <span class="footer-meta">Last updated May 2026</span>
+    </footer>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-protobuf.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.Prism) Prism.highlightAll();
+    });
+  </script>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        fontFamily: 'Plus Jakarta Sans, sans-serif',
+        fontSize: '14px',
+        primaryColor: '#f4ead8',
+        primaryTextColor: '#2a1f17',
+        primaryBorderColor: '#d2552e',
+        lineColor: '#9a8978',
+        secondaryColor: '#fdf6ec',
+        tertiaryColor: '#fdf6ec',
+        background: '#fdf6ec',
+        mainBkg: '#f4ead8',
+        secondBkg: '#fdf6ec',
+        clusterBkg: '#fdf6ec',
+        clusterBorder: '#e3d4ba',
+        edgeLabelBackground: '#fdf6ec',
+        nodeTextColor: '#2a1f17'
+      },
+      flowchart: {
+        curve: 'basis',
+        padding: 16,
+        nodeSpacing: 40,
+        rankSpacing: 50,
+        htmlLabels: true
+      }
+    });
+  </script>
+
+</body>
+
+</html>
